@@ -45,7 +45,6 @@
     artifact_path: /tmp/ansible-runtime
     hipchat_url: https://api.hipchat.com/v2/
     extra_name_identifier: 0
-    version_tags: {}
   gather_facts: False
   connection: local
   tasks:
@@ -91,6 +90,7 @@
           'version:{{ name }}': '{{ repo }} {{ version }}',
           {% endfor %}
       }"
+    when: version_tags is defined
 
   - name: Fetch tags on the AMI
     ec2_tag:
