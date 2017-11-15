@@ -33,12 +33,17 @@
 # Thought that instead of performing all those steps and get the repo, why not directly use this repo
 # `deb http://repo.mysql.com/apt/ubuntu/ precise mysql-5.6`, I just picked this line and directly used it and it worked for us.
 
+- set_fact:
+    mysql_server_fqdn: "{{ EDXAPP_MYSQL_HOST }}"
+    mysql_ssl_ca: "{{ EDXAPP_MYSQL_HOST_SSL_CA }}"
+    mysql_cloud_db: "{{ EDXAPP_MYSQL_CLOUD_DB }}"
+
 - name: Add MySQL community apt key
   apt_key:
     id: 8C718D3B5072E1F5
     keyserver: "{{ COMMON_EDX_PPA_KEY_SERVER }}"
     state: present
-  when: ansible_distribution_release == 'precise'
+  when: ansible_distribution_release == 'precise' and not mysql_cloud_db
 
 # Despite ondrej's ppa having 12.04 support, we would need to do shenanigans and uninstalling
 # to switch back cleanly without publishing a new base devstack box.  Easier to just clean this
@@ -47,7 +52,7 @@
   apt_repository:
     repo: "deb http://repo.mysql.com/apt/ubuntu/ precise mysql-5.6"
     update_cache: yes
-  when: ansible_distribution_release == 'precise'
+  when: ansible_distribution_release == 'precise' and not mysql_cloud_db
 
 - name: Install mysql-5.6 and dependencies
   apt:
@@ -55,11 +60,13 @@
     install_recommends: yes
     state: present
   with_items: "{{ mysql_debian_pkgs }}"
+  when: not mysql_cloud_db
 
 - name: Start mysql
   service:
     name: mysql
     state: started
+  when: not mysql_cloud_db
 
 - name: Update mysql root password
   sudo: yes
@@ -69,10 +76,13 @@
     # try intended auth
     login_user: "root"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN | default('') }}"
+    login_host: "{{ mysql_server_fqdn }}"
     # sets password and access
     name: "root"
     password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN | default('') }}"
     priv: "*.*:ALL,GRANT"
+    ssl_ca: "{{ mysql_ssl_ca }}"
+  when: not mysql_cloud_db
 
 - name: Add/Update EDXAPP_MYSQL_USER_ADMIN user "{{ EDXAPP_MYSQL_USER_ADMIN | default('root') }}"
   sudo: yes
@@ -80,10 +90,13 @@
     # try root auth
     login_user: "root"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN | default('') }}"
+    login_host: "{{ mysql_server_fqdn }}"
     # sets password and access
     name: "{{ EDXAPP_MYSQL_USER_ADMIN | default('root') }}"
     password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN | default('') }}"
     priv: "*.*:ALL,GRANT"
+    ssl_ca: "{{ mysql_ssl_ca }}"
+  when: not mysql_cloud_db
 
 - name: Ensure Anonymous user(s) does not exist
   mysql_user:
@@ -91,4 +104,6 @@
     host_all: yes
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN | default('root') }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN | default('') }}"
+    login_host: "{{ mysql_server_fqdn }}"
     state: absent
+    ssl_ca: "{{ mysql_ssl_ca }}"

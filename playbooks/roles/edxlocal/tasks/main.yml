@@ -4,6 +4,9 @@
 
 - set_fact:
     mysql_user_host: "{{ EDXAPP_MYSQL_HOST }}"
+    mysql_server_fqdn: "{{ EDXAPP_MYSQL_HOST }}"
+    mysql_user_name_suffix: ""
+    mysql_ssl_ca: "/etc/ssl/certs/Baltimore_CyberTrust_Root.pem"
 
 - set_fact:
     mysql_user_host: '%'
@@ -23,8 +26,10 @@
     db: "{{ item }}"
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
+    login_host: "{{ mysql_server_fqdn }}"
     state: present
     encoding: utf8
+    ssl_ca: "{{ mysql_ssl_ca }}"
   when: item != None and item != ''
   with_items: "{{ edxlocal_databases }}"
 
@@ -33,11 +38,13 @@
     host: "{{ mysql_user_host }}"
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
+    login_host: "{{ mysql_server_fqdn }}"
     name: "{{ item.user }}"
     password: "{{ item.pass }}"
     priv: "{{ item.db }}.*:ALL"
     append_privs: yes
-  when: item.db != None and item.db != ''
+    ssl_ca: "{{ mysql_ssl_ca }}"
+  when: item.db != None and item.db != '' and '@' not in item.user
   with_items: "{{ edxlocal_database_users }}"
 
 - name: setup the migration db user
@@ -45,10 +52,12 @@
     host: "{{ mysql_user_host }}"
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
+    login_host: "{{ mysql_server_fqdn }}"
     name: "{{ COMMON_MYSQL_MIGRATE_USER }}"
     password: "{{ COMMON_MYSQL_MIGRATE_PASS }}"
     priv: "{{ item }}.*:ALL"
     append_privs: yes
+    ssl_ca: "{{ mysql_ssl_ca }}"
   when: item != None and item != ''
   with_items: "{{ edxlocal_databases }}"
 
@@ -57,9 +66,11 @@
     host: "{{ mysql_user_host }}"
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
+    login_host: "{{ mysql_server_fqdn }}"
     name: "api001"
     password: "{{ ANALYTICS_API_DATABASES.default.PASSWORD }}"
     priv: '{{ ANALYTICS_API_DATABASES.default.NAME }}.*:ALL/reports.*:SELECT'
+    ssl_ca: "{{ mysql_ssl_ca }}"
   when: ANALYTICS_API_SERVICE_CONFIG is defined
 
 - name: create read-only reports user for the analytics-api
@@ -67,18 +78,22 @@
     host: "{{ mysql_user_host }}"
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
-    name: reports001
+    login_host: "{{ mysql_server_fqdn }}"
+    name: "reports001"
     password: "{{ ANALYTICS_API_DATABASES.reports.PASSWORD }}"
     priv: '{{ ANALYTICS_API_DATABASES.reports.NAME }}.*:SELECT'
+    ssl_ca: "{{ mysql_ssl_ca }}"
   when: ANALYTICS_API_SERVICE_CONFIG is defined
 
 - name: create a database for the hive metastore
   mysql_db:
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
+    login_host: "{{ mysql_server_fqdn }}"
     db: "{{ HIVE_METASTORE_DATABASE.name }}"
     state: "present"
     encoding: "latin1"
+    ssl_ca: "{{ mysql_ssl_ca }}"
   when: HIVE_METASTORE_DATABASE is defined
 
 - name: setup the edx-notes-api db user
@@ -86,9 +101,11 @@
     host: "{{ mysql_user_host }}"
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
+    login_host: "{{ mysql_server_fqdn }}"
     name: "{{ EDX_NOTES_API_MYSQL_DB_USER }}"
-    password: "{{ EDX_NOTES_API_MYSQL_DB_PASS }}"
+    password: "{{ EDX_NOTES_API_MYSQL_DB_PASS }}" 
     priv: "{{ EDX_NOTES_API_MYSQL_DB_NAME }}.*:SELECT,INSERT,UPDATE,DELETE"
+    ssl_ca: "{{ mysql_ssl_ca }}"
   when: EDX_NOTES_API_MYSQL_DB_USER is defined
 
 - name: setup the read-only db user
@@ -96,18 +113,22 @@
     host: "{{ mysql_user_host }}"
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
+    login_host: "{{ mysql_server_fqdn }}"
     name: "{{ COMMON_MYSQL_READ_ONLY_USER }}"
     password: "{{ COMMON_MYSQL_READ_ONLY_PASS }}"
-    priv: "*.*:ALL"
+    priv: "*.*:SELECT"
+    ssl_ca: "{{ mysql_ssl_ca }}"
 
 - name: setup the admin db user
   mysql_user:
     host: "{{ mysql_user_host }}"
     login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
+    login_host: "{{ mysql_server_fqdn }}"
     name: "{{ COMMON_MYSQL_ADMIN_USER }}"
     password: "{{ COMMON_MYSQL_ADMIN_PASS }}"
     priv: "*.*:CREATE USER"
+    ssl_ca: "{{ mysql_ssl_ca }}"
 
 - name: install memcached
   apt: pkg=memcached state=present
