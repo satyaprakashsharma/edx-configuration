@@ -64,7 +64,7 @@
 
 - name: Install the nginx package
   apt:
-    name: nginx
+    name: nginx-extras
     state: latest
     update_cache: yes
   notify: restart nginx
