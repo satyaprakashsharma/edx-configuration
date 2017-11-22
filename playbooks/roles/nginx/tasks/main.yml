@@ -62,6 +62,7 @@
     - install
     - install:system-requirements
 
+# Use the nginx-extras package for headers-more-nginx-module support
 - name: Install the nginx package
   apt:
     name: nginx-extras
