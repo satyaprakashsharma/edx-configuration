@@ -8,6 +8,8 @@
 ## commands as root via sudo.  Caveat Emptor!
 ##
 
+set -e
+
 ##
 ## Sanity check
 ##
@@ -79,6 +81,9 @@ git clone https://github.com/edx/configuration
 cd configuration
 git checkout $CONFIGURATION_VERSION
 git pull
+
+add_remote msft_conf https://github.com/microsoft/edx-configuration.git
+cherry_pick_wrapper 9e05aafe417d8d4fd1b5bc23626358ecb9cc807b edx_admin@microsoft.com
 
 ##
 ## Install the ansible requirements
