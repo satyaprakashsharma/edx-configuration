@@ -16,6 +16,26 @@ if [[ `lsb_release -rs` != "16.04" ]]; then
    exit;
 fi
 
+wget_wrapper()
+{
+  local expectedPath="$1"
+  local org="$2"
+  local project="$3"
+  local branch="$4"
+
+  # Check if the file exists. If not, download from the public repository
+  if [[ -f "$expectedPath" ]] ; then
+    echo "$expectedPath"
+  else
+    local fileName=`basename $expectedPath`
+    if [[ ! -f "$fileName" ]] ; then
+      wget -q https://raw.githubusercontent.com/${org}/${project}/${branch}/$expectedPath -O $fileName
+    fi
+
+    echo "$fileName"
+  fi
+}
+
 ##
 ## Set ppa repository source for gcc/g++ 4.8 in order to install insights properly
 ##
@@ -71,6 +91,9 @@ fi
 
 CONFIGURATION_VERSION=${CONFIGURATION_VERSION-${OPENEDX_RELEASE-master}}
 
+local utilities=`wget_wrapper "templates/stamp/utilities.sh" "${MSFT}" "oxa-tools" "oxa/dev.fic_ci"`
+source $utilities
+
 ##
 ## Clone the configuration repository and run Ansible
 ##
@@ -82,8 +105,8 @@ git pull
 
 set -e
 
-add_remote msft_conf https://github.com/microsoft/edx-configuration.git
-cherry_pick_wrapper 9e05aafe417d8d4fd1b5bc23626358ecb9cc807b edx_admin@microsoft.com
+add_remote msft_conf "https://github.com/microsoft/edx-configuration.git"
+cherry_pick_wrapper 9e05aafe417d8d4fd1b5bc23626358ecb9cc807b "edx_admin@microsoft.com"
 
 ##
 ## Install the ansible requirements
