@@ -105,9 +105,11 @@ git pull
 
 set -e
 
-# Apply https://github.com/Microsoft/edx-configuration/pull/90
 add_remote msft_conf "https://github.com/microsoft/edx-configuration.git"
+# Apply https://github.com/Microsoft/edx-configuration/pull/90
 cherry_pick_wrapper f3d59dd09dbbd8b60c9049292c3c814f4de715c5 "edx_admin@microsoft.com"
+# Apply https://github.com/Microsoft/edx-configuration/pull/91
+cherry_pick_wrapper a6304eaaefc24d2c3c59d57606c059cdd75b1dd4 "edx_admin@microsoft.com"
 
 ##
 ## Install the ansible requirements
