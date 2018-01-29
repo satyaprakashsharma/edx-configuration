@@ -89,8 +89,6 @@ if [[ -f my-passwords.yml ]]; then
     EXTRA_VARS="-e@$(pwd)/my-passwords.yml $EXTRA_VARS"
 fi
 
-set -ex
-
 CONFIGURATION_VERSION=${CONFIGURATION_VERSION-${OPENEDX_RELEASE-master}}
 
 utilities=`wget_wrapper "templates/stamp/utilities.sh" "${MSFT}" "oxa-tools" "oxa/dev.fic_ci"`
