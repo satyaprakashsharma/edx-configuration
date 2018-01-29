@@ -89,9 +89,11 @@ if [[ -f my-passwords.yml ]]; then
     EXTRA_VARS="-e@$(pwd)/my-passwords.yml $EXTRA_VARS"
 fi
 
+set -ex
+
 CONFIGURATION_VERSION=${CONFIGURATION_VERSION-${OPENEDX_RELEASE-master}}
 
-local utilities=`wget_wrapper "templates/stamp/utilities.sh" "${MSFT}" "oxa-tools" "oxa/dev.fic_ci"`
+utilities=`wget_wrapper "templates/stamp/utilities.sh" "${MSFT}" "oxa-tools" "oxa/dev.fic_ci"`
 source $utilities
 
 ##
@@ -102,8 +104,6 @@ git clone https://github.com/edx/configuration
 cd configuration
 git checkout $CONFIGURATION_VERSION
 git pull
-
-set -e
 
 add_remote msft_conf "https://github.com/microsoft/edx-configuration.git"
 # Apply https://github.com/Microsoft/edx-configuration/pull/90
