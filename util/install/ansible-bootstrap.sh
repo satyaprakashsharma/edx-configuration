@@ -11,7 +11,7 @@
 # UPGRADE_OS=true CONFIGURATION_VERSION="master" \
 # bash <(curl -s https://raw.githubusercontent.com/edx/configuration/master/util/install/ansible-bootstrap.sh)
 
-set -xe
+set -e
 
 if [[ -z "${ANSIBLE_REPO}" ]]; then
   ANSIBLE_REPO="https://github.com/edx/ansible.git"
@@ -93,30 +93,30 @@ fi
 EDX_PPA="deb http://ppa.edx.org ${SHORT_DIST} main"
 
 # Upgrade the OS
-apt-get update -y
-apt-key update -y
+apt-get update -y -qq
+apt-key update -y -qq
 
 if [ "${UPGRADE_OS}" = true ]; then
     echo "Upgrading the OS..."
-    apt-get upgrade -y
+    apt-get upgrade -y -qq
 fi
 
 # Required for add-apt-repository
-apt-get install -y software-properties-common python-software-properties
+apt-get install -y -qq software-properties-common python-software-properties
 
 # Add git PPA
-add-apt-repository -y ppa:git-core/ppa
+add-apt-repository -y -qq ppa:git-core/ppa
 
 # For older software we need to install our own PPA.
-apt-key adv --keyserver "${EDX_PPA_KEY_SERVER}" --recv-keys "${EDX_PPA_KEY_ID}"
-add-apt-repository -y "${EDX_PPA}"
+apt-key adv -qq --keyserver "${EDX_PPA_KEY_SERVER}" --recv-keys "${EDX_PPA_KEY_ID}"
+add-apt-repository -y -qq "${EDX_PPA}"
 
 # Install python 2.7 latest, git and other common requirements
 # NOTE: This will install the latest version of python 2.7 and
 # which may differ from what is pinned in virtualenvironments
-apt-get update -y
+apt-get update -y -qq
 
-apt-get install -y python2.7 python2.7-dev python-pip python-apt python-yaml python-jinja2 build-essential sudo git-core libmysqlclient-dev libffi-dev libssl-dev
+apt-get install -y -qq python2.7 python2.7-dev python-pip python-apt python-yaml python-jinja2 build-essential sudo git-core libmysqlclient-dev libffi-dev libssl-dev
 
 
 # Workaround for a 16.04 bug, need to upgrade to latest and then
@@ -145,7 +145,7 @@ if [[ "true" == "${RUN_ANSIBLE}" ]]; then
 
     # Install the configuration repository to install
     # edx_ansible role
-    git clone ${CONFIGURATION_REPO} ${CONFIGURATION_DIR}
+    git clone --quiet ${CONFIGURATION_REPO} ${CONFIGURATION_DIR}
     cd ${CONFIGURATION_DIR}
     git checkout ${CONFIGURATION_VERSION}
     make requirements
