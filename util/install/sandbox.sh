@@ -8,6 +8,8 @@
 ## commands as root via sudo.  Caveat Emptor!
 ##
 
+set -e
+
 ##
 ## Sanity check
 ##
@@ -39,19 +41,19 @@ wget_wrapper()
 ##
 ## Set ppa repository source for gcc/g++ 4.8 in order to install insights properly
 ##
-sudo apt-get install -y python-software-properties
-sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+sudo apt-get install -y -qq python-software-properties
+sudo add-apt-repository -y -qq ppa:ubuntu-toolchain-r/test
 
 ##
 ## Update and Upgrade apt packages
 ##
-sudo apt-get update -y
-sudo apt-get upgrade -y
+sudo apt-get update -y -qq
+sudo apt-get upgrade -y -qq
 
 ##
 ## Install system pre-requisites
 ##
-sudo apt-get install -y build-essential software-properties-common curl git-core libxml2-dev libxslt1-dev python-pip libmysqlclient-dev python-apt python-dev libxmlsec1-dev libfreetype6-dev swig gcc g++
+sudo apt-get install -y -qq build-essential software-properties-common curl git-core libxml2-dev libxslt1-dev python-pip libmysqlclient-dev python-apt python-dev libxmlsec1-dev libfreetype6-dev swig gcc g++
 sudo pip install --upgrade pip==8.1.2
 sudo pip install --upgrade setuptools==24.0.3
 sudo -H pip install --upgrade virtualenv==15.0.2
@@ -101,7 +103,6 @@ cd /var/tmp
 git clone https://github.com/edx/configuration
 cd configuration
 git checkout $CONFIGURATION_VERSION
-git pull
 
 add_remote msft_conf "https://github.com/microsoft/edx-configuration.git"
 # Apply https://github.com/Microsoft/edx-configuration/pull/90
