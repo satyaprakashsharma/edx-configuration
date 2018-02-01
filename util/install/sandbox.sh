@@ -93,7 +93,7 @@ fi
 
 CONFIGURATION_VERSION=${CONFIGURATION_VERSION-${OPENEDX_RELEASE-master}}
 
-utilities=`wget_wrapper "templates/stamp/utilities.sh" "${MSFT}" "oxa-tools" "oxa/dev.fic_ci"`
+utilities=`wget_wrapper "templates/stamp/utilities.sh" "sdolenc" "oxa-tools" "odf_ci2"`
 source $utilities
 
 ##
