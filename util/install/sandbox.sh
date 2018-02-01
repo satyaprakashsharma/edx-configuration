@@ -54,9 +54,9 @@ sudo apt-get upgrade -y -qq
 ## Install system pre-requisites
 ##
 sudo apt-get install -y -qq build-essential software-properties-common curl git-core libxml2-dev libxslt1-dev python-pip libmysqlclient-dev python-apt python-dev libxmlsec1-dev libfreetype6-dev swig gcc g++
-sudo pip install --upgrade pip==8.1.2
-sudo pip install --upgrade setuptools==24.0.3
-sudo -H pip install --upgrade virtualenv==15.0.2
+sudo pip install --quiet --upgrade pip==8.1.2
+sudo pip install --quiet --upgrade setuptools==24.0.3
+sudo -H pip install --quiet --upgrade virtualenv==15.0.2
 
 ##
 ## Overridable version variables in the playbooks. Each can be overridden
@@ -114,7 +114,7 @@ cherry_pick_wrapper a6304eaaefc24d2c3c59d57606c059cdd75b1dd4 "edx_admin@microsof
 ## Install the ansible requirements
 ##
 cd /var/tmp/configuration
-sudo -H pip install -r requirements.txt
+sudo -H pip install --quiet -r requirements.txt
 
 ##
 ## Run the edx_sandbox.yml playbook in the configuration/playbooks directory

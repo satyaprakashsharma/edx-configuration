@@ -123,18 +123,18 @@ apt-get install -y -qq python2.7 python2.7-dev python-pip python-apt python-yaml
 # potentially downgrade to the preferred version.
 if [[ "xenial" = "${SHORT_DIST}" ]]; then
     #apt-get install -y python2.7 python2.7-dev python-pip python-apt python-yaml python-jinja2
-    pip install --upgrade pip
-    pip install --upgrade pip=="${PIP_VERSION}"
+    pip install --quiet --upgrade pip
+    pip install --quiet --upgrade pip=="${PIP_VERSION}"
     #apt-get install -y build-essential sudo git-core libmysqlclient-dev
 else
     #apt-get install -y python2.7 python2.7-dev python-pip python-apt python-yaml python-jinja2 build-essential sudo git-core libmysqlclient-dev
-    pip install --upgrade pip=="${PIP_VERSION}"
+    pip install --quiet --upgrade pip=="${PIP_VERSION}"
 fi
 
 # pip moves to /usr/local/bin when upgraded
 PATH=/usr/local/bin:${PATH}
-pip install setuptools=="${SETUPTOOLS_VERSION}"
-pip install virtualenv=="${VIRTUAL_ENV_VERSION}"
+pip install --quiet setuptools=="${SETUPTOOLS_VERSION}"
+pip install --quiet virtualenv=="${VIRTUAL_ENV_VERSION}"
 
 
 if [[ "true" == "${RUN_ANSIBLE}" ]]; then
