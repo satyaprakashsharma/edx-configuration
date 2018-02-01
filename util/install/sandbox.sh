@@ -42,7 +42,7 @@ wget_wrapper()
 ## Set ppa repository source for gcc/g++ 4.8 in order to install insights properly
 ##
 sudo apt-get install -y -qq python-software-properties
-sudo add-apt-repository -y -qq ppa:ubuntu-toolchain-r/test
+sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 
 ##
 ## Update and Upgrade apt packages
