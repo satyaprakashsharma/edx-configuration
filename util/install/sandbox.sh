@@ -93,13 +93,13 @@ fi
 
 CONFIGURATION_VERSION=${CONFIGURATION_VERSION-${OPENEDX_RELEASE-master}}
 
+set -x
 utilities=`wget_wrapper "templates/stamp/utilities.sh" "sdolenc" "oxa-tools" "odf_ci2"`
 source $utilities
 
 ##
 ## Clone the configuration repository and run Ansible
 ##
-set -x
 cd /var/tmp
 git clone https://github.com/edx/configuration
 cd configuration
