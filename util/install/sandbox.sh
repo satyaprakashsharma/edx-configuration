@@ -99,6 +99,7 @@ source $utilities
 ##
 ## Clone the configuration repository and run Ansible
 ##
+set -x
 cd /var/tmp
 git clone https://github.com/edx/configuration
 cd configuration
