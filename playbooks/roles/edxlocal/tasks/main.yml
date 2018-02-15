@@ -6,7 +6,7 @@
     mysql_user_host: "{{ EDXAPP_MYSQL_HOST }}"
     mysql_server_fqdn: "{{ EDXAPP_MYSQL_HOST }}"
     mysql_user_name_suffix: ""
-    mysql_ssl_ca: "/etc/ssl/certs/Baltimore_CyberTrust_Root.pem"
+    mysql_ssl_ca: "{{ EDXAPP_MYSQL_HOST_SSL_CA }}"
 
 - set_fact:
     mysql_user_host: '%'
