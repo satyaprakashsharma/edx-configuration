@@ -89,7 +89,7 @@
   mysql_user:
     # try root auth
     login_user: "root"
-    login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN | default('') }}"
+    login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN | default('') }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_host: "{{ mysql_server_fqdn }}"
     # sets password and access
     name: "{{ EDXAPP_MYSQL_USER_ADMIN | default('root') }}"
@@ -102,7 +102,7 @@
   mysql_user:
     name: ''
     host_all: yes
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN | default('root') }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN | default('root') }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN | default('') }}"
     login_host: "{{ mysql_server_fqdn }}"
     state: absent

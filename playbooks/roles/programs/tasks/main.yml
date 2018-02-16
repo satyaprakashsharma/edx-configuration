@@ -45,7 +45,7 @@
 - name: migrate
   shell: >
     chdir={{ programs_code_dir }}
-    DB_MIGRATION_USER={{ COMMON_MYSQL_MIGRATE_USER }}
+    DB_MIGRATION_USER={{ COMMON_MYSQL_MIGRATE_USER }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}
     DB_MIGRATION_PASS={{ COMMON_MYSQL_MIGRATE_PASS }}
     {{ programs_venv_dir }}/bin/python ./manage.py migrate --noinput
   become_user: "{{ programs_user }}"

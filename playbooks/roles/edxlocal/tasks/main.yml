@@ -24,7 +24,7 @@
 - name: create databases
   mysql_db:
     db: "{{ item }}"
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
     login_host: "{{ mysql_server_fqdn }}"
     state: present
@@ -36,7 +36,7 @@
 - name: create database users
   mysql_user:
     host: "{{ mysql_user_host }}"
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
     login_host: "{{ mysql_server_fqdn }}"
     name: "{{ item.user }}"
@@ -50,7 +50,7 @@
 - name: setup the migration db user
   mysql_user:
     host: "{{ mysql_user_host }}"
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
     login_host: "{{ mysql_server_fqdn }}"
     name: "{{ COMMON_MYSQL_MIGRATE_USER }}"
@@ -64,7 +64,7 @@
 - name: create api user for the analytics api
   mysql_user:
     host: "{{ mysql_user_host }}"
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
     login_host: "{{ mysql_server_fqdn }}"
     name: "api001"
@@ -76,7 +76,7 @@
 - name: create read-only reports user for the analytics-api
   mysql_user:
     host: "{{ mysql_user_host }}"
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
     login_host: "{{ mysql_server_fqdn }}"
     name: "reports001"
@@ -87,7 +87,7 @@
 
 - name: create a database for the hive metastore
   mysql_db:
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
     login_host: "{{ mysql_server_fqdn }}"
     db: "{{ HIVE_METASTORE_DATABASE.name }}"
@@ -99,7 +99,7 @@
 - name: setup the edx-notes-api db user
   mysql_user:
     host: "{{ mysql_user_host }}"
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
     login_host: "{{ mysql_server_fqdn }}"
     name: "{{ EDX_NOTES_API_MYSQL_DB_USER }}"
@@ -111,7 +111,7 @@
 - name: setup the read-only db user
   mysql_user:
     host: "{{ mysql_user_host }}"
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
     login_host: "{{ mysql_server_fqdn }}"
     name: "{{ COMMON_MYSQL_READ_ONLY_USER }}"
@@ -122,7 +122,7 @@
 - name: setup the admin db user
   mysql_user:
     host: "{{ mysql_user_host }}"
-    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}"
+    login_user: "{{ EDXAPP_MYSQL_USER_ADMIN }}@{{ EDXAPP_MYSQL_CLOUD_SERVER_NAME }}"
     login_password: "{{ EDXAPP_MYSQL_PASSWORD_ADMIN }}"
     login_host: "{{ mysql_server_fqdn }}"
     name: "{{ COMMON_MYSQL_ADMIN_USER }}"
