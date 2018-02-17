@@ -118,6 +118,9 @@ xqueue_auth_config:
       HOST: "{{ XQUEUE_MYSQL_HOST }}"
       PORT: "{{ XQUEUE_MYSQL_PORT }}"
       ATOMIC_REQUESTS: True
+      OPTIONS: 
+        ssl: 
+          ca: "{{ XQUEUE_MYSQL_HOST_SSL_CA }}"
   RABBITMQ_USER: "{{ XQUEUE_RABBITMQ_USER }}"
   RABBITMQ_PASS: "{{ XQUEUE_RABBITMQ_PASS }}"
 

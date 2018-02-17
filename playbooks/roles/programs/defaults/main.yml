@@ -37,6 +37,9 @@ PROGRAMS_DATABASES:
     PORT: '{{ PROGRAMS_DATABASE_PORT }}'
     ATOMIC_REQUESTS: true
     CONN_MAX_AGE: 60
+    OPTIONS: 
+      ssl: 
+        ca: "{{ PROGRAM_MYSQL_HOST_SSL_CA }}"
 
 PROGRAMS_VERSION: "master"
 PROGRAMS_DJANGO_SETTINGS_MODULE: "programs.settings.production"

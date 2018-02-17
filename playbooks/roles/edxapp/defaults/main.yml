@@ -745,7 +745,7 @@ edxapp_databases:
     PORT: "{{ EDXAPP_MYSQL_REPLICA_PORT }}"
     OPTIONS: 
       ssl: 
-        ca: '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem'
+        ca: "{{ EDXAPP_MYSQL_HOST_SSL_CA }}"
   default:
     ENGINE: 'django.db.backends.mysql'
     NAME: "{{ EDXAPP_MYSQL_DB_NAME }}"
@@ -756,7 +756,7 @@ edxapp_databases:
     ATOMIC_REQUESTS: True
     OPTIONS: 
       ssl: 
-        ca: '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem'
+        ca: "{{ EDXAPP_MYSQL_HOST_SSL_CA }}"
   student_module_history:
     ENGINE: 'django.db.backends.mysql'
     NAME: "{{ EDXAPP_MYSQL_CSMH_DB_NAME }}"
@@ -766,7 +766,7 @@ edxapp_databases:
     PORT: "{{ EDXAPP_MYSQL_CSMH_PORT }}"
     OPTIONS: 
       ssl: 
-        ca: '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem'
+        ca: "{{ EDXAPP_MYSQL_HOST_SSL_CA }}"
 
 edxapp_generic_auth_config:  &edxapp_generic_auth
   EVENT_TRACKING_SEGMENTIO_EMIT_WHITELIST: "{{ EDXAPP_EVENT_TRACKING_SEGMENTIO_EMIT_WHITELIST }}"
