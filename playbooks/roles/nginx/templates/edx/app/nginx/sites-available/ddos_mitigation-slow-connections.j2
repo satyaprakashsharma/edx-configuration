@@ -1,0 +1,6 @@
+  # Close connections which are writing data too infrequently,
+  # which can represent an attempt to keep connections open as
+  # long as possible.  Slowloris is an example of this type of
+  # attack.
+  client_body_timeout 30s;
+  client_header_timeout 30s;
