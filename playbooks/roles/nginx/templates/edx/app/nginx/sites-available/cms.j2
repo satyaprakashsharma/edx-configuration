@@ -115,7 +115,7 @@ error_page {{ k }} {{ v }};
 
   location / {
     {% if EDXAPP_ENABLE_RATE_LIMITING %}
-      limit_req zone=root;
+      limit_req zone=root burst={{ EDXAPP_SITE_REQUEST_BURST_RATE }};
     {% endif %}
 
     {% if EDXAPP_CMS_ENABLE_BASIC_AUTH|bool %}
