@@ -2,5 +2,5 @@
   # which can represent an attempt to keep connections open as
   # long as possible.  Slowloris is an example of this type of
   # attack.
-  client_body_timeout 30s;
-  client_header_timeout 30s;
+  client_body_timeout {{ EDXAPP_CLIENT_BODY_TIMEOUT }};
+  client_header_timeout {{ EDXAPP_CLIENT_HEADER_TIMEOUT }};
