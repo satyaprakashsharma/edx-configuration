@@ -32,7 +32,7 @@ server {
   # LMS configuration file for nginx, templated by ansible
 
   {% if EDXAPP_ENABLE_CONNECTION_LIMITING %}
-    limit_conn addr {{ EDXAPP_CONNECTIONS_PER_ADDRESS_LIMIT }};
+  limit_conn addr {{ EDXAPP_CONNECTIONS_PER_ADDRESS_LIMIT }};
   {% endif %}
 
   {% if NGINX_EDXAPP_ENABLE_S3_MAINTENANCE %}
@@ -142,7 +142,7 @@ error_page {{ k }} {{ v }};
 
   location / {
     {% if EDXAPP_ENABLE_RATE_LIMITING %}
-      limit_req zone=root burst={{ EDXAPP_SITE_REQUEST_BURST_RATE }};
+    limit_req zone=root burst={{ EDXAPP_SITE_REQUEST_BURST_RATE }};
     {% endif %}
 
     {% if EDXAPP_LMS_ENABLE_BASIC_AUTH|bool %}
@@ -157,7 +157,7 @@ error_page {{ k }} {{ v }};
   # The most common image to use is favicon.ico.
   location /login {
     {% if EDXAPP_ENABLE_RATE_LIMITING %}
-      limit_req zone=login;
+    limit_req zone=login;
     {% endif %}
 
     {% if EDXAPP_LMS_ENABLE_BASIC_AUTH|bool %}
