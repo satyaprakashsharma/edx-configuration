@@ -22,7 +22,9 @@ limit_req_zone $binary_remote_addr zone=root:10m rate={{ EDXAPP_SITE_REQUEST_RAT
 {% endif %}
 
 {% if EDXAPP_ENABLE_CONNECTION_LIMITING %}
+
 # Allow each client IP address to open no more than a configured number of connections
 # to the website.
 limit_conn_zone $binary_remote_addr zone=addr:10m;
+
 {% endif %}
