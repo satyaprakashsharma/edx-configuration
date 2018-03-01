@@ -10,8 +10,6 @@ upstream cms-backend {
     {% endfor %}
 }
 
-{% include "ddos_mitigation-limit-zones.j2" %}
-
 server {
   # CMS configuration file for nginx, templated by ansible
 
