@@ -4,8 +4,6 @@ upstream lms-preview-backend {
     {% endfor %}
 }
 
-{% include "ddos_mitigation-limit-zones.j2" %}
-
 server {
   # LMS-preview configuration file for nginx, templated by ansible
 
