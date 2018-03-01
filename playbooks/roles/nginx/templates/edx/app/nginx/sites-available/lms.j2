@@ -11,8 +11,6 @@ upstream lms-backend {
 
 }
 
-{% include "ddos_mitigation-limit-zones.j2" %}
-
 {% if NGINX_EDXAPP_EMBARGO_CIDRS %}
   {%- if NGINX_SET_X_FORWARDED_HEADERS %}
 geo $remote_addr $embargo {
